@@ -1,5 +1,53 @@
 {% extends 'myapp/base.html' %}
+{% load static %}
+
 {% block content %}
-<h1>Welcome to PizzaHub 🍕</h1>
-<a href="{% url 'menu' %}" class="btn">Go to Menu</a>
+
+<!-- HERO SECTION -->
+<section class="hero">
+    <div class="hero-overlay">
+        <div class="hero-content">
+            <h1>Welcome to PizzaHub!</h1>
+            <p>Delicious pizzas delivered to your door</p>
+            <a href="{% url 'menu' %}" class="btn">Order Now</a>
+        </div>
+    </div>
+    <img src="{% static 'myapp/images/hero1.jpg' %}" alt="Hero Pizza" class="hero-image">
+</section>
+
+<!-- PIZZAS OFFERINGS SECTION -->
+<section class="pizzas">
+    <h2>Our Pizzas</h2>
+    <div class="pizza-list">
+        <div class="pizza-card">
+            <img src="{% static 'myapp/images/pizza1.jpg' %}" alt="Margherita">
+            <h3>Margherita</h3>
+            <p>Classic delight with fresh tomatoes & cheese</p>
+            <p>Price: $10</p>
+            <a href="#" class="btn">Add to Cart</a>
+        </div>
+        <div class="pizza-card">
+            <img src="{% static 'myapp/images/pizza2.jpg' %}" alt="Pepperoni">
+            <h3>Pepperoni</h3>
+            <p>Loaded with pepperoni & extra cheese</p>
+            <p>Price: $12</p>
+            <a href="#" class="btn">Add to Cart</a>
+        </div>
+        <div class="pizza-card">
+            <img src="{% static 'myapp/images/pizza3.jpg' %}" alt="Veggie Delight">
+            <h3>Veggie Delight</h3>
+            <p>Fresh veggies with a mix of sauces</p>
+            <p>Price: $11</p>
+            <a href="#" class="btn">Add to Cart</a>
+        </div>
+        <div class="pizza-card">
+            <img src="{% static 'myapp/images/pizza4.jpg' %}" alt="BBQ Chicken">
+            <h3>BBQ Chicken</h3>
+            <p>Grilled chicken with BBQ sauce</p>
+            <p>Price: $13</p>
+            <a href="#" class="btn">Add to Cart</a>
+        </div>
+    </div>
+</section>
+
 {% endblock %}

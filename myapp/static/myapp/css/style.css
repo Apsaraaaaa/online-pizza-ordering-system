@@ -1,41 +1,52 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+    font-family: Arial;
+    background: #f2f2f2;
 }
 
-header {
-    background: #ff6347;
-    color: white;
+.navbar {
+    background: #d32f2f;
     padding: 15px;
-    text-align: center;
-}
-
-nav a {
-    color: white;
-    margin: 0 10px;
-    text-decoration: none;
-}
-
-.pizza-list,
-.menu-list {
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    justify-content: space-between;
+    color: white;
+}
+
+.navbar ul {
+    display: flex;
+    list-style: none;
+}
+
+.navbar li {
+    margin-left: 20px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.container {
     padding: 20px;
 }
 
-.pizza-card,
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
 .menu-card {
-    border: 1px solid #ddd;
-    border-radius: 10px;
+    background: white;
     padding: 10px;
-    width: 200px;
+    border-radius: 8px;
     text-align: center;
 }
 
-.pizza-card img,
-.menu-card img {
-    width: 100%;
-    border-radius: 10px;
+.btn {
+    background: #ff8c00;
+    padding: 8px 15px;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
 }

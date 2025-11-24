@@ -1,16 +1,19 @@
 {% extends 'myapp/base.html' %}
-
 {% block content %}
-<h2>Menu</h2>
-<div class="menu-list">
-    {% for pizza in pizzas %}
-    <div class="menu-card">
-        <img src="{{ pizza.image.url }}" alt="{{ pizza.name }}">
-        <h3>{{ pizza.name }}</h3>
-        <p>Size: {{ pizza.size }}</p>
-        <p>Crust: {{ pizza.crust }}</p>
-        <p>Price: ${{ pizza.price }}</p>
-    </div>
-    {% endfor %}
+<h1>Menu</h1>
+<div class="menu-grid">
+{% for p in pizzas %}
+<div class="menu-card">
+    <img src="{{ p.image.url if p.image else '/static/myapp/images/pizza1.jpg' }}" alt="{{ p.name }}">
+    <h2>{{ p.name }}</h2>
+    <p>Size: {{ p.size.name }} | Crust: {{ p.crust.name }}</p>
+    <p>Price: Rs {{ p.calculate_total }}</p>
+    <form method="post" action="{% url 'cart' %}">
+        {% csrf_token %}
+        <input type="hidden" name="pizza_id" value="{{ p.id }}">
+        <button class="btn">Add to Cart</button>
+    </form>
+</div>
+{% endfor %}
 </div>
 {% endblock %}

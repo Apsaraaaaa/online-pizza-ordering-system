@@ -144,6 +144,74 @@ header nav a:hover {
     }
 }
 
+/* Auth section styling */
+.auth-section {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background: #ff4d4d;
+    /* pizza red theme */
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    color: white;
+    text-align: center;
+}
+
+/* Headings */
+.auth-section h2 {
+    margin-bottom: 20px;
+    font-size: 28px;
+}
+
+/* Input fields */
+.auth-section input[type="text"],
+.auth-section input[type="password"],
+.auth-section input[type="email"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 8px;
+    background: #ffe6e6;
+    /* light pink */
+    color: #333;
+    font-size: 16px;
+}
+
+/* Input focus */
+.auth-section input:focus {
+    outline: none;
+    box-shadow: 0 0 5px #ff6666;
+}
+
+/* Submit button */
+.auth-section .btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    border: none;
+    border-radius: 8px;
+    background: #b30000;
+    /* darker red button */
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.auth-section .btn:hover {
+    background: #e60000;
+    /* brighter red on hover */
+}
+
+/* Link inside auth section */
+.auth-section a {
+    color: #ffe6e6;
+    text-decoration: underline;
+}
+
+
+
 
 footer {
     text-align: center;

@@ -31,30 +31,29 @@ def cart(request):
         'total_price': total_price
     })
 
-
-
+# add_to_cart
 def add_to_cart(request, pizza_id):
-    cart = request.session.get('cart', {})  
+    cart = request.session.get('cart', {})
     if str(pizza_id) in cart:
         cart[str(pizza_id)] += 1
     else:
         cart[str(pizza_id)] = 1
     request.session['cart'] = cart
-    request.session.modified = True  
+    request.session.modified = True
     messages.success(request, "Pizza added to cart!")
-    return redirect('cart')  
+    return redirect('menu')  
 
+# remove_from_cart
 def remove_from_cart(request, pizza_id):
     cart = request.session.get('cart', {})
     pizza_id = str(pizza_id)
-
     if pizza_id in cart:
         del cart[pizza_id]      
         request.session['cart'] = cart
         request.session.modified = True
         messages.success(request, "Pizza removed from cart.")
-    
     return redirect('cart')  
+
 
 # Register
 def register_view(request):

@@ -5,7 +5,6 @@
     <title>PizzaHub</title>
     {% load static %}
     <link rel="stylesheet" href="{% static 'myapp/css/style.css' %}">
-
 </head>
 <body>
     <header>
@@ -25,12 +24,21 @@
     </header>
 
     <main>
-        {% block content %}
-        {% endblock %}
+        {% block content %}{% endblock %}
     </main>
 
     <footer>
         <p>&copy; 2025 PizzaHub</p>
     </footer>
+<div id="popup-container"></div>
+
+<script src="{% static 'myapp/js/script.js' %}"></script>
+
+{% if request.session.cart_message %}
+<script>
+    createPopup("{{ request.session.cart_message }}");
+</script>
+{% endif %}
+
 </body>
 </html>

@@ -1,19 +1,30 @@
 {% extends 'myapp/base.html' %}
+{% load static %}
 
 {% block content %}
-<h2>Menu</h2>
-<div class="pizza-list">
-    {% for pizza in pizzas %}
-    <div class="pizza-card">
-        <img src="{{ pizza.image.url }}" alt="{{ pizza.name }}">
-        <h3>{{ pizza.name }}</h3>
-        <p>Size: {{ pizza.size.name }} | Crust: {{ pizza.crust.name }}</p>
-        <p>Toppings: 
-            {% for t in pizza.toppings.all %}{{ t.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
-        </p>
-        <p>Price: ${{ pizza.calculate_total }}</p>
-        <a href="{% url 'add_to_cart' pizza.id %}" class="btn">Add to Cart</a>
+<section class="menu-section">
+    <h2>Our Menu</h2>
+    <div class="pizza-list">
+        {% for pizza in pizzas %}
+        <div class="pizza-card">
+            {% if pizza.image %}
+                <img src="{{ pizza.image.url }}" alt="{{ pizza.name }}">
+            {% else %}
+                <img src="{% static 'myapp/images/pizza5.jpg' %}" alt="{{ pizza.name }}">
+            {% endif %}
+            <h3>{{ pizza.name }}</h3>
+            <p>Size: {{ pizza.size.name }} | Crust: {{ pizza.crust.name }}</p>
+            <p>Toppings: 
+                {% for t in pizza.toppings.all %}
+                    {{ t.name }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+            <p>Price: ${{ pizza.calculate_total }}</p>
+            <a href="{% url 'add_to_cart' pizza.id %}" class="btn">Add to Cart</a>
+        </div>
+        {% empty %}
+        <p>No pizzas available right now.</p>
+        {% endfor %}
     </div>
-    {% endfor %}
-</div>
+</section>
 {% endblock %}

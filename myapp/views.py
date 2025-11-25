@@ -4,15 +4,16 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib import messages
 from .models import Pizza, Order, Customer
 
-# Home page
 def home(request):
     pizzas = Pizza.objects.all()
     return render(request, 'myapp/home.html', {'pizzas': pizzas})
 
-# Menu page
 def menu(request):
     pizzas = Pizza.objects.all()
     return render(request, 'myapp/menu.html', {'pizzas': pizzas})
+
+
+
 
 # Cart page
 def cart(request):

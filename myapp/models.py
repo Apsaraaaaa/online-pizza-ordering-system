@@ -1,4 +1,5 @@
 from django.db import models
+from decimal import Decimal
 
 # Customer & Profile
 class Customer(models.Model):
@@ -21,7 +22,7 @@ class CustomerProfile(models.Model):
 # Toppings
 class Topping(models.Model):
     name = models.CharField(max_length=50)
-    extra_price = models.FloatField(default=0)
+    extra_price = models.DecimalField(max_digits=5, decimal_places=2, default=0)
 
     def __str__(self):
         return self.name
@@ -70,10 +71,12 @@ class Order(models.Model):
     total_price = models.DecimalField(max_digits=6, decimal_places=2, default=0)
     ordered_at = models.DateTimeField(auto_now_add=True)
 
-    def calculate_total(self):
-        total = sum(p.calculate_total() for p in self.pizzas.all())
-        self.total_price = total
-        self.save()
+from decimal import Decimal
+
+def calculate_total(self):
+    topping_cost = sum([Decimal(t.extra_price) for t in self.toppings.all()])
+    return self.size.price + topping_cost
+
 
     def __str__(self):
         return f"Order #{self.id} by {self.customer.name}"

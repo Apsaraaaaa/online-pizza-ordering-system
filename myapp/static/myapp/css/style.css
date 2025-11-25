@@ -80,7 +80,6 @@ header nav a:hover {
     background-color: #e63232;
 }
 
-/* PIZZA GRID */
 .pizzas {
     padding: 50px 20px;
     text-align: center;
@@ -133,7 +132,7 @@ header nav a:hover {
     background-color: #e63232;
 }
 
-/* RESPONSIVE */
+
 @media (max-width: 768px) {
     .hero-content h1 {
         font-size: 2rem;
@@ -144,23 +143,106 @@ header nav a:hover {
     }
 }
 
-/* Auth section styling */
-.auth-section {
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 30px;
-    background: #ff4d4d;
-    /* pizza red theme */
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    color: white;
+.menu-section {
+    padding: 40px 20px;
     text-align: center;
+    background: #f9f9f9;
 }
 
-/* Headings */
+.menu-section h2 {
+    font-size: 2em;
+    margin-bottom: 30px;
+    color: #ff4d4d;
+}
+
+.pizza-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.pizza-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.pizza-card:hover {
+    transform: scale(1.05);
+}
+
+.pizza-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+.pizza-info h3 {
+    margin-top: 15px;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.pizza-info p {
+    margin: 5px 0;
+    color: #555;
+    font-size: 0.95em;
+}
+
+.price {
+    font-weight: bold;
+    color: #ff4d4d;
+    margin: 10px 0;
+}
+
+.btn {
+    display: inline-block;
+    padding: 8px 20px;
+    background: #ff4d4d;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.btn:hover {
+    background: #e60000;
+}
+
+
+
+/* Auth section improved */
+.auth-section {
+    max-width: 450px;
+    margin: 60px auto;
+    padding: 40px 30px;
+    background: #ff4d4d;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
 .auth-section h2 {
-    margin-bottom: 20px;
-    font-size: 28px;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 30px;
+}
+
+.auth-section form {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 15px 20px;
+    align-items: center;
+}
+
+.auth-section label {
+    text-align: right;
+    font-weight: bold;
+    margin-right: 10px;
 }
 
 /* Input fields */
@@ -168,31 +250,25 @@ header nav a:hover {
 .auth-section input[type="password"],
 .auth-section input[type="email"] {
     width: 100%;
-    padding: 12px 15px;
-    margin: 10px 0;
-    border: none;
+    padding: 10px 5px;
     border-radius: 8px;
+    border: none;
     background: #ffe6e6;
-    /* light pink */
     color: #333;
     font-size: 16px;
 }
 
-/* Input focus */
 .auth-section input:focus {
     outline: none;
     box-shadow: 0 0 5px #ff6666;
 }
 
-/* Submit button */
 .auth-section .btn {
-    width: 100%;
+    grid-column: 1 / 3;
     padding: 12px;
-    margin-top: 15px;
     border: none;
     border-radius: 8px;
     background: #b30000;
-    /* darker red button */
     color: white;
     font-size: 16px;
     cursor: pointer;
@@ -201,17 +277,25 @@ header nav a:hover {
 
 .auth-section .btn:hover {
     background: #e60000;
-    /* brighter red on hover */
 }
 
-/* Link inside auth section */
+.auth-section .message {
+    grid-column: 1 / 3;
+    text-align: center;
+    color: #ffe6e6;
+    margin-bottom: 15px;
+}
+
+.auth-section p {
+    grid-column: 1 / 3;
+    text-align: center;
+    margin-top: 15px;
+}
+
 .auth-section a {
     color: #ffe6e6;
     text-decoration: underline;
 }
-
-
-
 
 footer {
     text-align: center;

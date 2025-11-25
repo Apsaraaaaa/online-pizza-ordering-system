@@ -12,18 +12,22 @@
             {% else %}
                 <img src="{% static 'myapp/images/pizza5.jpg' %}" alt="{{ pizza.name }}">
             {% endif %}
-            <h3>{{ pizza.name }}</h3>
-            <p>Size: {{ pizza.size.name }} | Crust: {{ pizza.crust.name }}</p>
-            <p>Toppings: 
-                {% for t in pizza.toppings.all %}
-                    {{ t.name }}{% if not forloop.last %}, {% endif %}
-                {% endfor %}
-            </p>
-            <p>Price: ${{ pizza.calculate_total }}</p>
-            <a href="{% url 'add_to_cart' pizza.id %}" class="btn">Add to Cart</a>
+            <div class="pizza-info">
+                <h3>{{ pizza.name }}</h3>
+                <p>Size: {{ pizza.size.name }} | Crust: {{ pizza.crust.name }}</p>
+                <p>Toppings:
+                    {% for t in pizza.toppings.all %}
+                        {{ t.name }}{% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                        None
+                    {% endfor %}
+                </p>
+                <p class="price">Price: ${{ pizza.calculate_total|floatformat:2 }}</p>
+                <a href="{% url 'add_to_cart' pizza.id %}" class="btn">Add to Cart</a>
+            </div>
         </div>
         {% empty %}
-        <p>No pizzas available right now.</p>
+            <p>No pizzas available right now.</p>
         {% endfor %}
     </div>
 </section>

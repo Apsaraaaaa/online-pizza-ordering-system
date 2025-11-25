@@ -2,8 +2,6 @@
 {% load static %}
 
 {% block content %}
-
-<!-- HERO SECTION -->
 <section class="hero">
     <div class="hero-overlay">
         <div class="hero-content">
@@ -14,39 +12,22 @@
     </div>
     <img src="{% static 'myapp/images/hero1.jpg' %}" alt="Hero Pizza" class="hero-image">
 </section>
-
-<!-- PIZZAS OFFERINGS SECTION -->
 <section class="pizzas">
-    <h2>Our Pizzas</h2>
+    <h2>Our Special Pizzas</h2>
     <div class="pizza-list">
+        {% for pizza in special_pizzas %}
         <div class="pizza-card">
-            <img src="{% static 'myapp/images/pizza1.jpg' %}" alt="Margherita">
-            <h3>Margherita</h3>
-            <p>Classic delight with fresh tomatoes & cheese</p>
-            <p>Price: Rs1000</p>
-            <a href="#" class="btn">Add to Cart</a>
+            {% if pizza.image %}
+                <img src="{{ pizza.image.url }}" alt="{{ pizza.name }}">
+            {% else %}
+                <img src="{% static 'myapp/images/default-pizza.jpg' %}" alt="{{ pizza.name }}">
+            {% endif %}
+            <h3>{{ pizza.name }}</h3>
+            <p>{{ pizza.description }}</p>
+            <a href="{% url 'add_to_cart' pizza.id %}" class="btn">Add to Cart</a>
+
         </div>
-        <div class="pizza-card">
-            <img src="{% static 'myapp/images/pizza2.jpg' %}" alt="Pepperoni">
-            <h3>Pepperoni</h3>
-            <p>Loaded with pepperoni & extra cheese</p>
-            <p>Price: Rs1200</p>
-            <a href="#" class="btn">Add to Cart</a>
-        </div>
-        <div class="pizza-card">
-            <img src="{% static 'myapp/images/pizza3.jpg' %}" alt="Veggie Delight">
-            <h3>Veggie Delight</h3>
-            <p>Fresh veggies with a mix of sauces</p>
-            <p>Price: Rs1100</p>
-            <a href="#" class="btn">Add to Cart</a>
-        </div>
-        <div class="pizza-card">
-            <img src="{% static 'myapp/images/pizza4.jpg' %}" alt="BBQ Chicken">
-            <h3>BBQ Chicken</h3>
-            <p>Grilled chicken with BBQ sauce</p>
-            <p>Price: Rs1300</p>
-            <a href="#" class="btn">Add to Cart</a>
-        </div>
+        {% endfor %}
     </div>
 </section>
 

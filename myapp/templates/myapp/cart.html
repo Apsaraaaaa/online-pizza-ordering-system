@@ -1,32 +1,49 @@
 {% extends 'myapp/base.html' %}
+{% load static %}
 
 {% block content %}
-<h2>Your Cart</h2>
-{% if cart %}
-<table>
-    <tr>
-        <th>Pizza</th>
-        <th>Size</th>
-        <th>Crust</th>
-        <th>Toppings</th>
-        <th>Price</th>
-        <th>Remove</th>
-    </tr>
-    {% for item in cart %}
-    <tr>
-        <td>{{ item.pizza.name }}</td>
-        <td>{{ item.pizza.size.name }}</td>
-        <td>{{ item.pizza.crust.name }}</td>
-        <td>
-            {% for t in item.pizza.toppings.all %}{{ t.name }}{% if not forloop.last %}, {% endif %}{% endfor %}
-        </td>
-        <td>${{ item.pizza.calculate_total }}</td>
-        <td><a href="{% url 'remove_from_cart' item.id %}">Remove</a></td>
-    </tr>
-    {% endfor %}
-</table>
-<a href="{% url 'checkout' %}" class="btn">Checkout</a>
-{% else %}
-<p>Your cart is empty.</p>
-{% endif %}
+<section class="cart">
+    <h2>Your Cart</h2>
+
+    {% if pizzas_in_cart %}
+    <table class="cart-table">
+        <thead>
+            <tr>
+                <th>Pizza</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in pizzas_in_cart %}
+            <tr>
+                <td>
+                    {% if item.pizza.image %}
+                        <img src="{{ item.pizza.image.url }}" alt="{{ item.pizza.name }}" class="cart-img">
+                    {% else %}
+                        <img src="{% static 'myapp/images/default-pizza.jpg' %}" alt="{{ item.pizza.name }}" class="cart-img">
+                    {% endif %}
+                    {{ item.pizza.name }}
+                </td>
+                <td>Rs{{ item.pizza.price }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>Rs{{ item.total }}</td>
+                <td>
+                    <a href="{% url 'remove_from_cart' item.pizza.id %}" class="btn remove-btn">Remove</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <td>Rs{{ item.pizza.calculate_total }}</td>
+
+    <a href="{% url 'menu' %}" class="btn">Continue Shopping</a>
+
+    {% else %}
+    <p>Your cart is empty.</p>
+    <a href="{% url 'menu' %}" class="btn">Go to Menu</a>
+    {% endif %}
+</section>
 {% endblock %}

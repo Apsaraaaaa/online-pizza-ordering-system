@@ -24,6 +24,7 @@
                 </p>
                 <p class="price">Price: ${{ pizza.calculate_total|floatformat:2 }}</p>
                 <a href="{% url 'add_to_cart' pizza.id %}" class="btn">Add to Cart</a>
+
             </div>
         </div>
         {% empty %}

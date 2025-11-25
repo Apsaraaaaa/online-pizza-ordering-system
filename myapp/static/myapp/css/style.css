@@ -24,7 +24,6 @@ header nav a:hover {
     text-decoration: underline;
 }
 
-/* HERO SECTION */
 .hero {
     position: relative;
     width: 100%;
@@ -212,9 +211,88 @@ header nav a:hover {
     background: #e60000;
 }
 
+.cart {
+    padding: 50px 20px;
+    text-align: center;
+}
+
+.cart h2 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: #ff4d4d;
+}
+
+.cart-table {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto 30px;
+    border-collapse: collapse;
+}
+
+.cart-table th,
+.cart-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.cart-table th {
+    background: #ff4d4d;
+    color: white;
+}
+
+.cart-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.remove-btn {
+    background: #e60000;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.remove-btn:hover {
+    background: #ff4d4d;
+}
 
 
-/* Auth section improved */
+.btn {
+    display: inline-block;
+    padding: 8px 20px;
+    background: #ff4d4d;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #e60000;
+}
+
+@media (max-width: 768px) {
+
+    .cart-table th,
+    .cart-table td {
+        padding: 8px 5px;
+    }
+
+    .cart-img {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+
+
 .auth-section {
     max-width: 450px;
     margin: 60px auto;
@@ -245,7 +323,6 @@ header nav a:hover {
     margin-right: 10px;
 }
 
-/* Input fields */
 .auth-section input[type="text"],
 .auth-section input[type="password"],
 .auth-section input[type="email"] {

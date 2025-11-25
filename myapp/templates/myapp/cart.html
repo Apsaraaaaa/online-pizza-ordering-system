@@ -25,11 +25,11 @@
                     {% else %}
                         <img src="{% static 'myapp/images/default-pizza.jpg' %}" alt="{{ item.pizza.name }}" class="cart-img">
                     {% endif %}
-                    {{ item.pizza.name }}
+                    {{ item.pizza.name }} ({{ item.pizza.size.name }}, {{ item.pizza.crust.name }})
                 </td>
-                <td>Rs{{ item.pizza.price }}</td>
+                <td>Rs {{ item.pizza.calculate_total|floatformat:2 }}</td>
                 <td>{{ item.quantity }}</td>
-                <td>Rs{{ item.total }}</td>
+                <td>Rs {{ item.total|floatformat:2 }}</td>
                 <td>
                     <a href="{% url 'remove_from_cart' item.pizza.id %}" class="btn remove-btn">Remove</a>
                 </td>
@@ -37,7 +37,8 @@
             {% endfor %}
         </tbody>
     </table>
-    <td>Rs{{ item.pizza.calculate_total }}</td>
+
+    <h3>Total Price: Rs {{ total_price|floatformat:2 }}</h3>
 
     <a href="{% url 'menu' %}" class="btn">Continue Shopping</a>
 

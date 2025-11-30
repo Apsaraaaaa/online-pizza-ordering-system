@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib import messages
 from .models import Pizza, Order, Customer
+from .models import PizzaSize, PizzaCrust, Topping
 def home(request):
     special_pizzas = Pizza.objects.all()[:4]  
     return render(request, 'myapp/home.html', {'special_pizzas': special_pizzas})
@@ -31,7 +32,49 @@ def cart(request):
         'total_price': total_price
     })
 
-# add_to_cart
+def order_now(request):
+    
+
+    if request.method == "POST":
+        pizza_name = request.POST.get("pizza_name")
+        size_id = request.POST.get("size")
+        crust_id = request.POST.get("crust")
+        topping_ids = request.POST.getlist("toppings")
+
+        size = PizzaSize.objects.get(id=size_id)
+        crust = PizzaCrust.objects.get(id=crust_id)
+
+        
+        pizza = Pizza.objects.create(
+            name=pizza_name,
+            size=size,
+            crust=crust,
+        )
+        pizza.toppings.set(topping_ids)
+
+       
+        customer, _ = Customer.objects.get_or_create(
+            email="guest@example.com",
+            defaults={"name": "Guest User", "phone": "00000"}
+        )
+
+        # Create the order
+        order = Order.objects.create(customer=customer)
+        order.pizzas.add(pizza)
+        order.calculate_total()
+
+        messages.success(request, "Your order has been placed successfully!")
+        return redirect("home")
+
+    # GET request → show form
+    context = {
+        "sizes": PizzaSize.objects.all(),
+        "crusts": PizzaCrust.objects.all(),
+        "toppings": Topping.objects.all(),
+    }
+    return render(request, "myapp/order_form.html", context)
+
+
 def add_to_cart(request, pizza_id):
     cart = request.session.get('cart', {})
     if str(pizza_id) in cart:
@@ -40,20 +83,19 @@ def add_to_cart(request, pizza_id):
         cart[str(pizza_id)] = 1
     request.session['cart'] = cart
     request.session.modified = True
-    messages.success(request, "Pizza added to cart!")
-    return redirect('menu')  
+    # Cart-only popup
+    request.session['cart_message'] = "Pizza added to cart!"
+    return redirect('menu')
 
-# remove_from_cart
 def remove_from_cart(request, pizza_id):
     cart = request.session.get('cart', {})
     pizza_id = str(pizza_id)
     if pizza_id in cart:
-        del cart[pizza_id]      
+        del cart[pizza_id]
         request.session['cart'] = cart
         request.session.modified = True
-        messages.success(request, "Pizza removed from cart.")
-    return redirect('cart')  
-
+        request.session['cart_message'] = "Pizza removed from cart."
+    return redirect('cart')
 
 # Register
 def register_view(request):

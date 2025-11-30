@@ -1,23 +1,34 @@
-console.log("Pizza Ordering System Loaded");
+function addToCart(name) {
+    console.log("Add to Cart Clicked:", name);
+    createPopup(`${name} added to cart`);
+}
+
+function removeFromCart(name) {
+    console.log("Remove from Cart Clicked:", name);
+    createPopup(`${name} removed from cart`);
+}
 
 function createPopup(text) {
-    const container = document.getElementById('popup-container');
-    if (!container) return;
+    console.log("Popup Triggered:", text);
 
-    const popup = document.createElement('div');
-    popup.classList.add('popup', 'success');
+    const container = document.getElementById("popup-container");
+    if (!container) {
+        console.log("Popup container NOT found");
+        return;
+    }
+
+    const popup = document.createElement("div");
+    popup.classList.add("popup");
     popup.innerText = text;
 
     container.appendChild(popup);
 
     setTimeout(() => {
-        popup.style.opacity = '1';
-        popup.style.transform = 'translateX(0)';
+        popup.classList.add("show");
     }, 50);
 
     setTimeout(() => {
-        popup.style.opacity = '0';
-        popup.style.transform = 'translateX(100%)';
+        popup.classList.remove("show");
         setTimeout(() => popup.remove(), 500);
-    }, 3000);
+    }, 2500);
 }

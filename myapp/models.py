@@ -51,7 +51,8 @@ class Pizza(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def calculate_total(self):
-        topping_cost = sum([t.extra_price for t in self.toppings.all()])
+        # Convert topping prices to Decimal to avoid type errors
+        topping_cost = sum([Decimal(t.extra_price) for t in self.toppings.all()])
         return self.size.price + topping_cost
 
     def __str__(self):
@@ -71,12 +72,11 @@ class Order(models.Model):
     total_price = models.DecimalField(max_digits=6, decimal_places=2, default=0)
     ordered_at = models.DateTimeField(auto_now_add=True)
 
-from decimal import Decimal
-
-def calculate_total(self):
-    topping_cost = sum([Decimal(t.extra_price) for t in self.toppings.all()])
-    return self.size.price + topping_cost
-
+    def calculate_total(self):
+        total = sum([p.calculate_total() for p in self.pizzas.all()])
+        self.total_price = total
+        self.save()
+        return self.total_price
 
     def __str__(self):
         return f"Order #{self.id} by {self.customer.name}"

@@ -1,0 +1,76 @@
+{% extends "myapp/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'myapp/css/order.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="order-container">
+    <h2>Your order </h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="pizza_name">Pizza Name</label>
+            <input type="text" id="pizza_name" name="pizza_name" placeholder="Give your pizza a name" required>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="size">Size</label>
+                <select id="size" name="size" required>
+                    <option value="">Select a size</option>
+                    {% for s in sizes %}
+                    <option value="{{ s.id }}">{{ s.name }} - ${{ s.price }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="crust">Crust</label>
+                <select id="crust" name="crust" required>
+                    <option value="">Select a crust type</option>
+                    {% for c in crusts %}
+                    <option value="{{ c.id }}">{{ c.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="toppings-section">
+            <label>Toppings</label>
+            <div class="toppings-grid">
+                {% for t in toppings %}
+                <div class="topping-item">
+                    <input type="checkbox" id="topping{{ t.id }}" name="toppings" value="{{ t.id }}">
+                    <label for="topping{{ t.id }}">
+                        {{ t.name }}
+                        <span class="price-tag">(+ ${{ t.extra_price }})</span>
+                    </label>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="price-summary">
+            <div class="summary-title">Order Summary</div>
+            <div class="summary-item">
+                <span>Base Price:</span>
+                <span id="base-price">$0.00</span>
+            </div>
+            <div class="summary-item">
+                <span>Toppings:</span>
+                <span id="toppings-price">$0.00</span>
+            </div>
+            <div class="summary-total">
+                <span>Total:</span>
+                <span id="total-price">$0.00</span>
+            </div>
+        </div>
+
+        <button type="submit" class="order-btn">Place Order</button>
+    </form>
+</div>
+{% endblock %}

@@ -7,7 +7,7 @@
 
 {% block content %}
 <div class="order-container">
-    <h2>Your order </h2>
+    <h2>Your order</h2>
 
     <form method="POST">
         {% csrf_token %}
@@ -20,10 +20,12 @@
         <div class="form-row">
             <div class="form-group">
                 <label for="size">Size</label>
-                <select id="size" name="size" required>
+                <select id="size" name="size" class="pizza-size" required>
                     <option value="">Select a size</option>
                     {% for s in sizes %}
-                    <option value="{{ s.id }}">{{ s.name }} - ${{ s.price }}</option>
+                    <option value="{{ s.id }}" data-price="{{ s.price }}">
+                        {{ s.name }} - Rs{{ s.price }}
+                    </option>
                     {% endfor %}
                 </select>
             </div>
@@ -44,10 +46,16 @@
             <div class="toppings-grid">
                 {% for t in toppings %}
                 <div class="topping-item">
-                    <input type="checkbox" id="topping{{ t.id }}" name="toppings" value="{{ t.id }}">
+                    <input type="checkbox"
+                           id="topping{{ t.id }}"
+                           name="toppings[]"
+                           value="{{ t.id }}"
+                           class="topping"
+                           data-price="{{ t.extra_price }}">
+
                     <label for="topping{{ t.id }}">
                         {{ t.name }}
-                        <span class="price-tag">(+ ${{ t.extra_price }})</span>
+                        <span class="price-tag">(+ Rs{{ t.extra_price }})</span>
                     </label>
                 </div>
                 {% endfor %}
@@ -58,19 +66,22 @@
             <div class="summary-title">Order Summary</div>
             <div class="summary-item">
                 <span>Base Price:</span>
-                <span id="base-price">$0.00</span>
+                <span id="base-price">Rs0.00</span>
             </div>
             <div class="summary-item">
                 <span>Toppings:</span>
-                <span id="toppings-price">$0.00</span>
+                <span id="toppings-price">Rs0.00</span>
             </div>
             <div class="summary-total">
                 <span>Total:</span>
-                <span id="total-price">$0.00</span>
+                <span id="total-price">Rs0.00</span>
             </div>
         </div>
 
         <button type="submit" class="order-btn">Place Order</button>
     </form>
 </div>
+
+<script src="{% static 'myapp/js/order.js' %}"></script>
+
 {% endblock %}

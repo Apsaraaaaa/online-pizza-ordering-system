@@ -1,11 +1,18 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Customer, CustomerProfile, Topping, PizzaSize, PizzaCrust, Pizza, Order
+from .models import Customer, CustomerProfile, Topping, PizzaSize, PizzaCrust, Pizza, Order,Menu
 
 class CustomerProfileInline(admin.StackedInline):
     model = CustomerProfile
     can_delete = False
     verbose_name_plural = 'Profile'
+
+@admin.register(Menu)
+class MenuAdmin(admin.ModelAdmin):
+    list_display = ('name', 'is_special', 'total_items', 'created_at')
+    list_filter = ('is_special', 'created_at')
+    search_fields = ('name',)
+    filter_horizontal = ('pizzas',)
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
@@ -39,7 +46,6 @@ class PizzaAdmin(admin.ModelAdmin):
         return "-"
     image_tag.short_description = 'Image'
 
-# ---------------- Order ----------------
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('id', 'customer', 'status', 'total_price', 'ordered_at')

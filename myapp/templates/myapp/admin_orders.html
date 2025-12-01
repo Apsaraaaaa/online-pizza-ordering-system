@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Orders</title>
+    <link rel="stylesheet" href="{% static 'myapp/css/admin.css' %}">
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h2>PizzaHub Admin</h2>
+    <a href="{% url 'admin_dashboard' %}">Dashboard</a>
+    <a href="{% url 'admin_orders' %}">Orders</a>
+    <a href="{% url 'admin_logout' %}">Logout</a>
+</div>
+
+<div class="main-content">
+
+    <h1>Orders</h1>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Customer</th>
+            <th>Status</th>
+            <th>Total</th>
+            <th>Action</th>
+        </tr>
+
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.customer.name }}</td>
+            <td>{{ order.status }}</td>
+            <td>{{ order.total_price }}</td>
+            <td>
+                {% if order.status == 'pending' %}
+                <a class="confirm-btn" href="{% url 'confirm_order' order.id %}">Confirm</a>
+                {% else %}
+                ✔ Done
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+</body>
+</html>

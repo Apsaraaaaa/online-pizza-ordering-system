@@ -1,5 +1,6 @@
 from django.db import models
 from decimal import Decimal
+
 class Customer(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(unique=True)
@@ -9,6 +10,8 @@ class Customer(models.Model):
     def __str__(self):
         return self.name
 
+
+
 class CustomerProfile(models.Model):
     customer = models.OneToOneField(Customer, on_delete=models.CASCADE)
     address = models.TextField()
@@ -17,7 +20,7 @@ class CustomerProfile(models.Model):
     def __str__(self):
         return f"Profile of {self.customer.name}"
 
-# Toppings
+
 class Topping(models.Model):
     name = models.CharField(max_length=50)
     extra_price = models.DecimalField(max_digits=5, decimal_places=2, default=0)
@@ -25,7 +28,7 @@ class Topping(models.Model):
     def __str__(self):
         return self.name
 
-# Size and Crust
+
 class PizzaSize(models.Model):
     name = models.CharField(max_length=20)
     price = models.DecimalField(max_digits=5, decimal_places=2)
@@ -33,13 +36,14 @@ class PizzaSize(models.Model):
     def __str__(self):
         return self.name
 
+
 class PizzaCrust(models.Model):
     name = models.CharField(max_length=20)
 
     def __str__(self):
         return self.name
 
-# Pizza
+
 class Pizza(models.Model):
     name = models.CharField(max_length=100)
     size = models.ForeignKey(PizzaSize, on_delete=models.PROTECT)
@@ -49,14 +53,27 @@ class Pizza(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def calculate_total(self):
-        # Convert topping prices to Decimal to avoid type errors
         topping_cost = sum([Decimal(t.extra_price) for t in self.toppings.all()])
         return self.size.price + topping_cost
 
     def __str__(self):
         return f"{self.name} ({self.size.name})"
 
-# Orders
+
+class Menu(models.Model):
+    name = models.CharField(max_length=100)
+    pizzas = models.ManyToManyField(Pizza, blank=True)
+    description = models.TextField(blank=True)
+    is_special = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+    def total_items(self):
+        return self.pizzas.count()
+
+
 class Order(models.Model):
     STATUS_CHOICES = [
         ('PENDING', 'Pending'),

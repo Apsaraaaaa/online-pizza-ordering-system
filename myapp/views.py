@@ -8,7 +8,7 @@ def home(request):
     special_pizzas = Pizza.objects.all()[:4]  
     return render(request, 'myapp/home.html', {'special_pizzas': special_pizzas})
 
-def menu(request):
+def menu(request): 
     pizzas = Pizza.objects.all()
     return render(request, 'myapp/menu.html', {'pizzas': pizzas})
 
@@ -146,3 +146,83 @@ def logout_view(request):
     logout(request)
     messages.success(request, "You have been logged out.")
     return redirect('home')
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib import messages
+from .models import Pizza, Order
+
+# Admin decorator
+def admin_only(user):
+    return user.is_staff or user.is_superuser
+
+# Admin login
+def admin_login(request):
+    if request.user.is_authenticated and request.user.is_staff:
+        return redirect("admin_dashboard")
+
+    if request.method == "POST":
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            if user.is_staff:
+                login(request, user)
+                return redirect("admin_dashboard")
+            else:
+                messages.error(request, "You are not allowed to access admin dashboard.")
+        else:
+            messages.error(request, "Invalid credentials.")
+    else:
+        form = AuthenticationForm()
+
+    return render(request, "myapp/admin_login.html", {"form": form})
+
+# Admin dashboard
+@login_required
+@user_passes_test(admin_only)
+def admin_dashboard(request):
+    total_orders = Order.objects.count()
+    pending_orders = Order.objects.filter(status='PENDING').count()
+    delivered_orders = Order.objects.filter(status='DELIVERED').count()
+    pizzas = Pizza.objects.all()
+    context = {
+        "total_orders": total_orders,
+        "pending_orders": pending_orders,
+        "delivered_orders": delivered_orders,
+        "pizzas": pizzas,
+    }
+    return render(request, "myapp/admin_dashboard.html", context)
+
+# Admin orders
+@login_required
+@user_passes_test(admin_only)
+def admin_orders(request):
+    orders = Order.objects.all().order_by("-id")
+    return render(request, "myapp/admin_orders.html", {"orders": orders})
+
+# Confirm order
+@login_required
+@user_passes_test(admin_only)
+def confirm_order(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    order.status = "DELIVERED"
+    order.save()
+    messages.success(request, "Order confirmed!")
+    return redirect("admin_orders")
+
+# Delete pizza
+@login_required
+@user_passes_test(admin_only)
+def delete_pizza_admin(request, pizza_id):
+    pizza = get_object_or_404(Pizza, id=pizza_id)
+    pizza.delete()
+    messages.success(request, "Pizza deleted successfully!")
+    return redirect("admin_dashboard")
+
+# Admin logout
+@login_required
+def admin_logout(request):
+    logout(request)
+    return redirect("admin_login")

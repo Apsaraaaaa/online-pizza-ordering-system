@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard - PizzaHub</title>
+    <link rel="stylesheet" href="{% static 'myapp/css/admin.css' %}">
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>PizzaHub Admin</h2>
+    <a href="{% url 'admin_dashboard' %}">Dashboard</a>
+    <a href="{% url 'admin_orders' %}">Orders</a>
+    <a href="{% url 'home' %}">View Site</a>
+    <a href="{% url 'admin_logout' %}">Logout</a>
+</div>
+
+<div class="main-content">
+    <h1>Dashboard</h1>
+
+    <div class="cards">
+        <div class="card"><h3>Total Orders</h3><p>{{ total_orders }}</p></div>
+        <div class="card"><h3>Pending Orders</h3><p>{{ pending_orders }}</p></div>
+        <div class="card"><h3>Delivered Orders</h3><p>{{ delivered_orders }}</p></div>
+    </div>
+
+    <h2>Pizza List</h2>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Size</th>
+            <th>Crust</th>
+            <th>Price</th>
+            <th>Action</th>
+        </tr>
+        {% for p in pizzas %}
+        <tr>
+            <td>{{ p.name }}</td>
+            <td>{{ p.size.name }}</td>
+            <td>{{ p.crust.name }}</td>
+            <td>{{ p.calculate_total }}</td>
+            <td><a class="delete-btn" href="{% url 'delete_pizza_admin' p.id %}">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+</body>
+</html>

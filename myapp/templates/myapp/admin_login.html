@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Login - PizzaHub</title>
+    <link rel="stylesheet" href="{% static 'myapp/css/admin.css' %}">
+</head>
+<body>
+<div class="login-container">
+    <h2>Admin Login</h2>
+    {% if messages %}
+        {% for message in messages %}
+            <p class="message">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Login</button>
+    </form>
+</div>
+</body>
+</html>

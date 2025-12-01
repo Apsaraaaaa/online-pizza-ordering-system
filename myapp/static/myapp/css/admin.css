@@ -1,0 +1,121 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+}
+
+.sidebar {
+    width: 220px;
+    background: #ff4d4d;
+    height: 100vh;
+    position: fixed;
+    padding: 20px 15px;
+}
+
+.sidebar h2 {
+    color: white;
+    margin-bottom: 30px;
+    font-size: 22px;
+}
+
+.sidebar a {
+    display: block;
+    padding: 12px;
+    color: white;
+    text-decoration: none;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    transition: background 0.3s;
+}
+
+.sidebar a:hover {
+    background: #cc0000;
+}
+
+
+.main-content {
+    margin-left: 240px;
+    padding: 30px;
+}
+
+
+.cards {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.card {
+    flex: 1 1 200px;
+    padding: 25px;
+    background: white;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    background: white;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+    margin-top: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+th,
+td {
+    padding: 15px 12px;
+    text-align: left;
+}
+
+th {
+    background: #ff9999;
+    color: white;
+    font-weight: bold;
+}
+
+tr {
+    background: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+}
+
+td {
+    vertical-align: middle;
+}
+
+.delete-btn {
+    color: white;
+    background: #ff4d4d;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.delete-btn:hover {
+    background: #cc0000;
+}
+
+
+@media (max-width: 1000px) {
+    .cards {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 20px;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+}

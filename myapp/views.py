@@ -79,25 +79,47 @@ def order_now(request):
 
 def add_to_cart(request, pizza_id):
     cart = request.session.get('cart', {})
-    if str(pizza_id) in cart:
-        cart[str(pizza_id)] += 1
-    else:
-        cart[str(pizza_id)] = 1
+    pizza_id = str(pizza_id)
+
+    cart[pizza_id] = cart.get(pizza_id, 0) + 1
+
     request.session['cart'] = cart
-    request.session.modified = True
     request.session['cart_message'] = "Pizza added to cart!"
     return redirect('menu')
+
 
 def remove_from_cart(request, pizza_id):
     cart = request.session.get('cart', {})
     pizza_id = str(pizza_id)
+
     if pizza_id in cart:
         del cart[pizza_id]
-        request.session['cart'] = cart
-        request.session.modified = True
         request.session['cart_message'] = "Pizza removed from cart."
+
+    request.session['cart'] = cart
     return redirect('cart')
 
+def cart(request):
+    cart = request.session.get('cart', {})
+    pizzas = []
+    total_price = 0
+
+    for pizza_id, qty in cart.items():
+        pizza = get_object_or_404(Pizza, id=int(pizza_id))
+        pizza_total = pizza.calculate_total() * qty
+
+        pizzas.append({
+            'pizza': pizza,
+            'quantity': qty,
+            'subtotal': pizza_total
+        })
+
+        total_price += pizza_total
+
+    return render(request, 'myapp/cart.html', {
+        'pizzas': pizzas,
+        'total_price': total_price
+    })
 
 def register_view(request):
     if request.user.is_authenticated:

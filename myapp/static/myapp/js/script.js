@@ -1,42 +1,51 @@
 console.log("ORDER JS LOADED");
 
-
-function addToCart(name) {
-    console.log("Add to Cart Clicked:", name);
-    createPopup(`${name} added to cart`);
+// --- Real-time action handler ---
+function handleAction(url, method = 'POST', data = {}) {
+    fetch(url, {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCSRFToken(),
+        },
+        body: JSON.stringify(data)
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                createPopup(data.message, data.status || 'success');
+            }
+            if (data.reload) {
+                window.location.reload(); // optional
+            }
+        })
+        .catch(err => {
+            createPopup("Something went wrong", "error");
+            console.error(err);
+        });
 }
 
-function removeFromCart(name) {
-    console.log("Remove from Cart Clicked:", name);
-    createPopup(`${name} removed from cart`);
+// Helper to get CSRF token
+function getCSRFToken() {
+    return document.querySelector('[name=csrfmiddlewaretoken]').value;
 }
 
-function createPopup(text) {
-    console.log("Popup Triggered:", text);
+// --- DOMContentLoaded for page setup ---
+document.addEventListener("DOMContentLoaded", () => {
 
-    const container = document.getElementById("popup-container");
-    if (!container) {
-        console.log("Popup container NOT found");
-        return;
+    // Show Django messages from page load
+    if (window.DJANGO_MESSAGES) {
+        window.DJANGO_MESSAGES.forEach(msg => {
+            createPopup(msg.text, 'popup');
+        });
     }
 
-    const popup = document.createElement("div");
-    popup.classList.add("popup");
-    popup.innerText = text;
+    // Show cart messages from session
+    if (window.CART_MESSAGE) {
+        createPopup(window.CART_MESSAGE, 'popup');
+    }
 
-    container.appendChild(popup);
-
-    setTimeout(() => {
-        popup.classList.add("show");
-    }, 50);
-
-    setTimeout(() => {
-        popup.classList.remove("show");
-        setTimeout(() => popup.remove(), 500);
-    }, 2500);
-}
-
-document.addEventListener("DOMContentLoaded", () => {
+    // Pizza order price calculation
     const sizeSelect = document.querySelector(".pizza-size");
     const toppingCheckboxes = document.querySelectorAll(".topping");
 
@@ -48,7 +57,6 @@ document.addEventListener("DOMContentLoaded", () => {
         let basePrice = 0;
         let toppingsPrice = 0;
 
-       
         const selectedSize = sizeSelect.options[sizeSelect.selectedIndex];
         if (selectedSize && selectedSize.dataset.price) {
             basePrice = parseFloat(selectedSize.dataset.price);
@@ -62,14 +70,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const total = basePrice + toppingsPrice;
 
-       
         basePriceElement.textContent = `Rs${basePrice.toFixed(2)}`;
         toppingsPriceElement.textContent = `Rs${toppingsPrice.toFixed(2)}`;
         totalPriceElement.textContent = `Rs${total.toFixed(2)}`;
     }
 
-    sizeSelect.addEventListener("change", calculateTotal);
+    if (sizeSelect) {
+        sizeSelect.addEventListener("change", calculateTotal);
+    }
     toppingCheckboxes.forEach(t => t.addEventListener("change", calculateTotal));
 
-    calculateTotal(); 
+    calculateTotal();
 });

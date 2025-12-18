@@ -99,28 +99,6 @@ def remove_from_cart(request, pizza_id):
     request.session['cart'] = cart
     return redirect('cart')
 
-def cart(request):
-    cart = request.session.get('cart', {})
-    pizzas = []
-    total_price = 0
-
-    for pizza_id, qty in cart.items():
-        pizza = get_object_or_404(Pizza, id=int(pizza_id))
-        pizza_total = pizza.calculate_total() * qty
-
-        pizzas.append({
-            'pizza': pizza,
-            'quantity': qty,
-            'subtotal': pizza_total
-        })
-
-        total_price += pizza_total
-
-    return render(request, 'myapp/cart.html', {
-        'pizzas': pizzas,
-        'total_price': total_price
-    })
-
 def register_view(request):
     if request.user.is_authenticated:
         return redirect('home')
